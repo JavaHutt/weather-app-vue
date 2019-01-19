@@ -12,16 +12,14 @@
                             {{icons[darksky.currently.icon]}}
                         </div>
                         <div class="card-text">
-                        </div>
-                        <div class="card-text">
-                            {{darksky.currently.temperature | temperaturedecimal}} &deg;C
+                            {{darksky.currently.temperature | temperaturedecimal}}&deg;C
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="card text-white bg-secondary mb-3 text-center"
-                 v-if="openweather">
+                 v-if="openweather.weather">
                     <div class="card-header">OpenWeatherMap weather</div>
                     <div class="card-body">
                         <h4 class="card-title summary">
@@ -30,15 +28,29 @@
                             {{openweather.weather[0].icon}}
                         </div>
                         <div class="card-text">
+                            {{openweather.main.temp | temperaturedecimal}}&deg;C
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card text-white bg-secondary mb-3 text-center"
+                v-if="apixu.current">
+                    <div class="card-header">Apixu weather</div>
+                    <div class="card-body">
+                        <h4 class="card-title summary">
+                            {{apixu.current.condition.text}}</h4>
+                        <div class="card-text">
+                            {{apixu.current.condition.icon}}
                         </div>
                         <div class="card-text">
-                            {{openweather.main.temp | temperaturedecimal}} &deg;C
+                            {{apixu.current.temp_c}}&deg;C
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <pre>{{openweather}}</pre>
+        <pre>{{apixu}}</pre>
     </div>
 </template>
 
@@ -51,7 +63,7 @@ export default {
         return {
             darksky: {},
             openweather: {},
-            weatherbit: {},
+            apixu: {},
             icons: {
                 'clear-day': '<i class="wi wi-day-sunny"></i>',
                 'clear-night': '<i class="wi wi-night-clear"></i>',
@@ -73,8 +85,8 @@ export default {
         API.getOpenWeatherForecast().then((result) => {
             this.openweather = result.data;
         });
-        API.getWeatherbitForecast().then((result) => {
-            this.weatherbit = result.data;
+        API.getApixuForecast().then((result) => {
+            this.apixu = result.data;
         });
     },
     filters: {
