@@ -1,0 +1,13 @@
+@import './weather-icons.min.css';
+
+@font-face {
+    font-family: 'WeatherIcons';
+    src: url('../font/weathericons-regular-webfont.eot');
+    src: url('../font/weathericons-regular-webfont.woff2') format('woff2'),
+        url('../font/weathericons-regular-webfont.woff') format('woff'),
+        url('../font/weathericons-regular-webfont.ttf')  format('truetype'),
+        url('../font/weathericons-regular-webfont.svg') format('svg');
+}
+i {
+    font-size: 70px;
+}
