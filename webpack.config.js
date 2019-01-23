@@ -10,12 +10,23 @@ module.exports = {
     filename: 'build.js'
   },
   module: {
+    loaders: [{
+      test: /\.styl$/,
+      loader: 'css-loader!stylus-loader?paths=node_modules/bootstrap-stylus/stylus/'
+    }],
     rules: [
       {
         test: /\.css$/,
         use: [
           'vue-style-loader',
           'css-loader'
+        ],
+      },
+      {
+        test: /\.styl$/,
+        use: [
+          'vue-style-loader',
+          'stylus-loader'
         ],
       },
       {

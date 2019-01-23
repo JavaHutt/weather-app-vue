@@ -6,73 +6,82 @@
         <button @click="updateLocation">Search</button>
         <div class="row">        
             <div class="col-4">
-                <div class="card text-white bg-secondary mb-3 text-center"
-                 v-if="darksky">
-                    <a class="card-header" :href="darkskyUrl" target="_blank">Darksky forecast</a>
-                    <div class="card-body">
-                        <h4 class="card-title summary">
-                            {{darksky.currently.summary}}</h4>
-                        <div class="card-text icon" v-html="icons[darksky.currently.icon]">
+                <div class="card" v-if="darksky">
+                    <a class="card__header" :href="darkskyUrl" target="_blank" title="See source">
+                        <p class="card__header-link">Darksky forecast</p>
+                    </a>
+                    <div class="card__icon" v-html="icons[darksky.currently.icon]"></div>
+                    <p class="card__temp">{{darksky.currently.temperature | decimal}}&deg;C</p>
+                    <h4 class="card__summary">{{darksky.currently.summary}}</h4>
+                    <div class="card__data">
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{darksky.currently.windSpeed | decimal}}м/с {{darksky.currently.windBearing | direction}}</p>
+                            <i class="wi wi-strong-wind card__data-icon"></i>
+                            <p class="card__data-text">ветер</p>
                         </div>
-                        <div class="card-text">
-                            {{darksky.currently.temperature | decimal}}&deg;C
+                        <div class="card__data-item">
+                            <p class="card__data-number"> {{darksky.currently.pressure | mbToMm}} мм</p>
+                            <i class="wi wi-earthquake card__data-icon"></i>
+                            <p class="card__data-text">давление</p>
                         </div>
-                        <div class="card-text">
-                            {{darksky.currently.humidity | percentage}}%
-                        </div>
-                        <div class="card-text">
-                            {{darksky.currently.pressure | mbToMm}} мм
-                        </div>
-                        <div class="card-text">
-                            {{darksky.currently.windSpeed | decimal}}м/с {{darksky.currently.windBearing | direction}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card text-white bg-secondary mb-3 text-center"
-                 v-if="openweather">
-                    <a class="card-header" :href="openweatherUrl" target="_blank">OpenWeatherMap forecast</a>
-                    <div class="card-body">
-                        <h4 class="card-title summary">
-                            {{openweather.weather[0].description | capitalize}}</h4>
-                        <div class="card-text icon" v-html="icons[openweather.weather[0].icon]"></div>
-                        <div class="card-text">
-                            {{openweather.main.temp | decimal}}&deg;C
-                        </div>
-                        <div class="card-text">
-                            {{openweather.main.humidity}}%
-                        </div>
-                        <div class="card-text">
-                            {{openweather.main.pressure | mbToMm}}мм
-                        </div>
-                        <div class="card-text">
-                            {{openweather.wind.speed | decimal}}м/с {{openweather.wind.speed | direction}}
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{darksky.currently.humidity | percentage}}%</p>
+                            <i class="wi wi-raindrops card__data-icon"></i>
+                            <p class="card__data-text">влажность</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="card text-white bg-secondary mb-3 text-center"
-                v-if="apixu">
-                    <a class="card-header" :href="apixuUrl" target="_blank">Apixu forecast</a>
-                    <div class="card-body">
-                        <h4 class="card-title summary">
-                            {{apixu.current.condition.text}}</h4>
-                        <div class="card-text">
-                            {{apixu.current.condition.icon}}
+                <div class="card" v-if="darksky">
+                    <a class="card__header" :href="openweatherUrl" target="_blank" title="See source">
+                        <p class="card__header-link">OpenWeatherMap forecast</p>
+                    </a>
+                    <div class="card__icon" v-html="icons[openweather.weather[0].icon]"></div>
+                    <p class="card__temp">{{openweather.main.temp | decimal}}&deg;C</p>
+                    <h4 class="card__summary">{{openweather.weather[0].description | capitalize}}</h4>
+                    <div class="card__data">
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{openweather.wind.speed | decimal}}м/с {{openweather.wind.speed | direction}}</p>
+                            <i class="wi wi-strong-wind card__data-icon"></i>
+                            <p class="card__data-text">ветер</p>
                         </div>
-                        <div class="card-text">
-                            {{apixu.current.temp_c}}&deg;C
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{openweather.main.pressure | mbToMm}} мм</p>
+                            <i class="wi wi-earthquake card__data-icon"></i>
+                            <p class="card__data-text">давление</p>
                         </div>
-                        <div class="card-text">
-                            {{apixu.current.humidity}}%
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{openweather.main.humidity}}%</p>
+                            <i class="wi wi-raindrops card__data-icon"></i>
+                            <p class="card__data-text">влажность</p>
                         </div>
-                        <div class="card-text">
-                            {{apixu.current.pressure_mb | mbToMm}}мм
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" v-if="darksky">
+                    <a class="card__header" :href="apixuUrl" target="_blank" title="See source">
+                        <p class="card__header-link">Apixu forecast</p>
+                    </a>
+                    <div class="card__icon" v-html="icons[openweather.weather[0].icon]"></div>
+                    <p class="card__temp">{{apixu.current.temp_c}}&deg;C</p>
+                    <h4 class="card__summary">{{apixu.current.condition.text}}</h4>
+                    <div class="card__data">
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{apixu.current.wind_kph | kphToMs}}м/с {{apixu.current.wind_degree | direction}}</p>
+                            <i class="wi wi-strong-wind card__data-icon"></i>
+                            <p class="card__data-text">ветер</p>
                         </div>
-                        <div class="card-text">
-                            {{apixu.current.wind_kph | kphToMs}}м/с {{apixu.current.wind_degree | direction}}
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{apixu.current.pressure_mb | mbToMm}} мм</p>
+                            <i class="wi wi-earthquake card__data-icon"></i>
+                            <p class="card__data-text">давление</p>
+                        </div>
+                        <div class="card__data-item">
+                            <p class="card__data-number">{{apixu.current.humidity}}%</p>
+                            <i class="wi wi-raindrops card__data-icon"></i>
+                            <p class="card__data-text">влажность</p>
                         </div>
                     </div>
                 </div>
@@ -124,8 +133,8 @@ name: 'app',
                 'clear-night': '<i class="wi wi-night-clear"></i>',
                 '01n': '<i class="wi wi-night-clear"></i>',
                 rain: '<i class="wi wi-rain"></i>',
-                '02d': '<i class="wi wi-day-rain"></i>',
-                '02n': '<i class="wi wi-night-rain"></i>',
+                '02d': '<i class="wi wi-day-cloudy"></i>',
+                '02n': '<i class="wi wi-night-alt-cloudy"></i>',
                 '09d': '<i class="wi wi-day-showers"></i>',
                 '09n': '<i class="wi wi-night-showers"></i>',
                 '10d': '<i class="wi wi-day-rain"></i>',
