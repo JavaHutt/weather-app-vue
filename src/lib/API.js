@@ -6,9 +6,14 @@ const API_KEY_DARKSKY = '7102c032dfc82cbe484875a41e5ac1a5';
 const API_KEY_OPEN = '9ba6e5ed9610d49dcea7d39e4a9b4943';
 const API_KEY_APIXU = 'cda8f89f58a54a82981165202191701';
 const API_GEO = `${proxy}https://darksky.net/geo?q=`;
+const API_ADDRESS = `${proxy}https://darksky.net/rgeo?hires=1`;
 
 function getCoordinates(location) {
     return axios.get(`${API_GEO}${location}`);
+}
+
+function getAddress(lat, lon) {
+    return axios.get(`${API_ADDRESS}&lat=${lat}&lon=${lon}`)
 }
 
 function getDarkSkyForecast(lat, lon) {
@@ -26,4 +31,5 @@ export default {
     getOpenWeatherForecast,
     getApixuForecast,
     getCoordinates,
+    getAddress,
 };

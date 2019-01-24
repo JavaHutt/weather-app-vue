@@ -3,9 +3,12 @@
         <!-- <a onclick="setStyleSheet('https://bootswatch.com/4/solar/bootstrap.min.css')" href="#">Style 1</a>
         <a onclick="setStyleSheet('https://bootswatch.com/4/litera/bootstrap.min.css')" href="#">Style 2</a> -->
         <div class="search">
-            <input type="text" name="" id="" placeholder="Enter Location" v-model="location" class="search__input">
+            <input type="text" placeholder="Enter Location" v-model="location" class="search__input">
             <button @click="updateLocation" class="search__button">Search</button>
-            <button @click.once="showCard =! showCard" class="search__button search__button_big">Рассчитать усреднённое</button>
+            <button @click.once="showCalculated =! showCalculated" class="search__button search__button_big">Calculate average</button>
+        </div>
+        <div class="location">
+            <p class="location__text">Current weather in {{address.name}}, {{address.street}}</p>
         </div>
         <div class="row">
             <div class="card" v-if="darksky">
@@ -84,8 +87,8 @@
                 </div>
             </div>
         </div>
-        <div class="calculated" v-show="showCard" v-if="darksky && openweather && apixu">
-            <h4 class="calculated__header">Средние значения:</h4>
+        <div class="calculated" v-show="showCalculated" v-if="darksky && openweather && apixu">
+            <h4 class="calculated__header">Average measurements:</h4>
             <div class="calculated__data">
                 <p class="calculated__data-text">Температура: <span class="calculated__data-text_number">{{calculatedTemp | decimal}}&deg;C</span></p>
                 <p class="calculated__data-text">Влажность: <span class="calculated__data-text_number">{{calculatedHumidity | integer}}%</span></p>
@@ -93,6 +96,7 @@
                 <p class="calculated__data-text">Скорость ветра: <span class="calculated__data-text_number">{{calculatedSpeed | decimal}}м/с</span></p>
             </div>
         </div>
+    <button>Сменить систему измерения</button>
     </div>
 </template>
 
@@ -106,13 +110,14 @@ name: 'app',
             location: '', 
             geolat: '',
             geolon: '',
+            address: '',
             darksky: null,
             darkskyUrl: 'https://darksky.net/',
             openweather: null,
             openweatherUrl: 'https://openweathermap.org/',
             apixu: null,
             apixuUrl: 'https://www.apixu.com/weather/',
-            showCard: false,
+            showCalculated: false,
             icons: {
                 'clear-day': '<i class="wi wi-day-sunny"></i>',
                 '01d': '<i class="wi wi-day-sunny"></i>',
@@ -128,15 +133,18 @@ name: 'app',
                 '11d': '<i class="wi wi-thunderstorm"></i>',
                 '11n': '<i class="wi wi-thunderstorm"></i>',
                 snow: '<i class="wi wi-snow"></i>',
-                '13n': '<i class="wi wi-snow"></i>',
+                '13d': '<i class="wi wi-day-snow"></i>',
+                '13n': '<i class="wi wi-night-snow"></i>',
                 sleet: '<i class="wi wi-sleet"></i>',
                 wind: '<i class="wi wi-strong-wind"></i>',
                 fog: '<i class="wi wi-fog"></i>',
-                '50n': '<i class="wi wi-fog"></i>',
+                '50d': '<i class="wi wi-day-fog"></i>',
+                '50n': '<i class="wi wi-night-fog"></i>',
                 cloudy: '<i class="wi wi-cloudy"></i>',
                 '03d': '<i class="wi wi-cloudy"></i>',
                 '03n': '<i class="wi wi-cloudy"></i>',
                 '04n': '<i class="wi wi-cloud"></i>',
+                '04d': '<i class="wi wi-cloud"></i>',
                 'partly-cloudy-day': '<i class="wi wi-day-cloudy"></i>',
                 'partly-cloudy-night': '<i class="wi wi-night-alt-partly-cloudy"></i>',
             },
@@ -161,6 +169,13 @@ name: 'app',
             }
         },
         loadDarkSkyForecast(lat, lon) {
+            API.getAddress(lat, lon)
+                .then((result) => {
+                    this.address = result.data;
+                })
+                .catch((error) => {
+                    this.darksky = `Service is currently unavaliable ${error}`;
+                });
             API.getDarkSkyForecast(lat, lon)
                 .then((result) => {
                     this.darksky = result.data;
