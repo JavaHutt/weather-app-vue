@@ -8,7 +8,7 @@
             <button @click.once="showCalculated =! showCalculated" class="search__button search__button_big">Calculate average</button>
         </div>
         <div class="location">
-            <p class="location__text">Current weather in {{address.name}}, {{address.street}}</p>
+            <address class="location__text">Current weather in {{address.name}}, {{address.street}}</address>
         </div>
         <div class="row">
             <div class="card" v-if="darksky">
@@ -45,7 +45,7 @@
                 <h4 class="card__summary">{{openweather.weather[0].description | capitalize}}</h4>
                 <div class="card__data">
                     <div class="card__data-item">
-                        <p class="card__data-number">{{openweather.wind.speed | decimal}}м/с {{openweather.wind.speed | direction}}</p>
+                        <p class="card__data-number">{{openweather.wind.speed | decimal}}м/с {{openweather.wind.deg | direction}}</p>
                         <i class="wi wi-strong-wind card__data-icon"></i>
                         <p class="card__data-text">ветер</p>
                     </div>
@@ -93,9 +93,12 @@
                 <p class="calculated__data-text">Температура: <span class="calculated__data-text_number">{{calculatedTemp | decimal}}&deg;C</span></p>
                 <p class="calculated__data-text">Влажность: <span class="calculated__data-text_number">{{calculatedHumidity | integer}}%</span></p>
                 <p class="calculated__data-text">Давление: <span class="calculated__data-text_number">{{calculatedPressure | mbToMm}}мм</span></p>
-                <p class="calculated__data-text">Скорость ветра: <span class="calculated__data-text_number">{{calculatedSpeed | decimal}}м/с</span></p>
+                <p class="calculated__data-text">Скорость ветра: <span class="calculated__data-text_number">{{calculatedSpeed | decimal}}м/с</span>
+                <span class="calculated__data-text_number">{{calculatedDirection | direction}}</span>
+                </p>
             </div>
         </div>
+    <pre>{{darksky}}</pre>
     <button>Сменить систему измерения</button>
     </div>
 </template>
@@ -154,9 +157,9 @@ name: 'app',
         this.geolocation();
     },
     mounted() {
-        this.loadDarkSkyForecast('37.8267', '-122.4233')
-        this.loadOpenWeatherForecast('37.8267', '-122.4233')
-        this.loadApixuForecast('37.8267', '-122.4233')
+        this.loadDarkSkyForecast('56.8666', '53.2094')
+        this.loadOpenWeatherForecast('56.8666', '53.2094')
+        this.loadApixuForecast('56.8666', '53.2094')
     },
     methods: {
        geolocation() {
@@ -223,6 +226,9 @@ name: 'app',
         calculatedSpeed() {
             return (this.darksky.currently.windSpeed + this.openweather.wind.speed + (this.apixu.current.wind_kph* 0.27777777777778)) / 3;
         },
+        calculatedDirection() {
+            return (this.darksky.currently.windBearing + this.openweather.wind.deg + this.apixu.current.wind_degree) / 3;
+        },
     },
     filters: {
         integer(value) {
@@ -253,7 +259,7 @@ name: 'app',
             const southwest = 'ЮЗ';
             const northwest = 'СЗ';
 
-            if ((value >= 337.5 && value <= 0) || (value >= 0 && value < 22.5)) {
+            if ((value >= 337.5 && value <= 360) || (value >= 0 && value < 22.5)) {
                 return north;
             }
             if (value >= 22.5 && value < 67.5) {

@@ -1,6 +1,6 @@
 {
-  "name": "vueapp",
-  "description": "A Vue.js project",
+  "name": "weather-app",
+  "description": "A Vue.js project for studying purposes",
   "version": "1.0.0",
   "author": "Alex Karle",
   "license": "MIT",

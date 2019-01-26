@@ -8,8 +8,13 @@
         url('../font/weathericons-regular-webfont.ttf')  format('truetype'),
         url('../font/weathericons-regular-webfont.svg') format('svg');
 }
+@import '_dark.sass';
 @import '_grid.sass';
 @import '_search.sass';
 @import '_card.sass';
 @import '_calculated.sass';
 @import '_location.sass';
+
+body {
+    background-color: $bodyColor;
+}
